@@ -1,0 +1,101 @@
+@page
+@{
+    Layout = "_LabLayout";
+    ViewData["Title"] = "Playground";
+}
+
+@section Scripts {
+  <script src="~/js/input-lab-playground.js" asp-append-version="true" defer></script>
+}
+
+<main class="shell" id="main" tabindex="-1">
+  <div class="playground-page">
+    <header class="lesson-header playground-heading">
+      <h1>Playground</h1>
+      <p class="lesson-intro">Create a search or post a comment. Follow how the same input travels through unsafe and protected handling.</p>
+    </header>
+    <noscript><p class="noscript-note">Enable JavaScript to use the playground.</p></noscript>
+    <div id="playground" hidden>
+      <nav class="playground-nav" aria-label="Playground exercises">
+        <a href="#sql" data-exercise-link="sql" aria-current="location">SQL query builder</a>
+        <a href="#xss" data-exercise-link="xss">Stored XSS board</a>
+      </nav>
+
+      <section class="lesson-section playground-builder" data-exercise="sql" aria-labelledby="sql-builder-title">
+        <h2 id="sql-builder-title" tabindex="-1">Build a search query</h2>
+        <p class="section-copy">Choose what to search and what to return. The playground uses fictional tables and a read-only search model.</p>
+        <div class="builder-grid">
+          <form id="query-form" class="builder-form">
+            <div class="builder-fields">
+              <label class="builder-field">Table
+                <select name="table" id="query-table"></select>
+              </label>
+              <fieldset class="builder-field builder-columns">
+                <legend>Columns to return</legend>
+                <div id="query-columns" class="column-options"></div>
+              </fieldset>
+              <div class="builder-pair">
+                <label class="builder-field">Filter column
+                  <select name="field" id="query-field"></select>
+                </label>
+                <label class="builder-field">Comparison
+                  <select name="operator" id="query-operator">
+                    <option value="equals">Equals</option>
+                    <option value="contains">Contains</option>
+                  </select>
+                </label>
+              </div>
+              <label class="builder-field">Search value
+                <input name="value" id="query-value" value="notebook" maxlength="180" required autocomplete="off">
+              </label>
+              <label class="builder-field">Input scenario
+                <select name="scenario" id="query-scenario">
+                  <option value="ordinary">Ordinary search</option>
+                  <option value="broaden">Broaden the match (simulation)</option>
+                </select>
+              </label>
+            </div>
+            <div class="builder-actions">
+              <button class="button button-primary" type="submit">Run both modes</button>
+              <button class="button button-outline" type="button" id="query-reset">Reset SQL playground</button>
+            </div>
+          </form>
+          <div class="builder-preview">
+            <h3>Protected query preview</h3>
+            <pre><code id="query-preview"></code></pre>
+            <p class="section-copy">The search value is bound to <code>@@search</code>. The preview uses a fixed comparison for each supported operator.</p>
+            <p class="field-label preview-input-label">Effective search input</p>
+            <pre><code id="query-input-preview"></code></pre>
+          </div>
+        </div>
+        <p class="section-copy builder-status" id="query-status" role="status"></p>
+        <section class="playground-trace" id="query-trace" aria-label="SQL comparison" hidden></section>
+      </section>
+
+      <section class="lesson-section playground-builder" data-exercise="xss" aria-labelledby="xss-builder-title" hidden>
+        <h2 id="xss-builder-title" tabindex="-1">Test a comment</h2>
+        <p class="section-copy">Post once, then see how an unsafe and a protected reader view handle that same saved comment.</p>
+        <form id="comment-form" class="builder-form comment-form">
+          <div class="builder-fields">
+            <label class="builder-field">Comment text
+              <textarea name="comment" id="comment-value" rows="3" maxlength="180" required>Great explanation!</textarea>
+            </label>
+            <label class="builder-field">Comment scenario
+              <select name="scenario" id="comment-scenario">
+                <option value="ordinary">Ordinary comment</option>
+                <option value="banner">Show a banner (simulation)</option>
+              </select>
+            </label>
+          </div>
+          <div class="builder-actions">
+            <button class="button button-primary" type="submit">Post comment</button>
+            <button class="button button-outline" type="button" id="comment-reader" disabled>Open as another reader</button>
+            <button class="button button-outline" type="button" id="comment-reset">Reset XSS playground</button>
+          </div>
+        </form>
+        <p class="section-copy builder-status" id="comment-status" role="status"></p>
+        <section class="playground-trace" id="comment-trace" aria-label="Stored comment comparison" hidden></section>
+      </section>
+    </div>
+  </div>
+</main>

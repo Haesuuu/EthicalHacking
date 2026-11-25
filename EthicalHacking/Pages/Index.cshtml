@@ -1,0 +1,147 @@
+@page
+@model IndexModel
+@{
+    Layout = "_LabLayout";
+}
+
+@section Scripts {
+  <script src="~/js/input-lab.js" asp-append-version="true" defer></script>
+}
+
+<main class="shell" id="main" tabindex="-1">
+  <div id="home">
+    <section class="hero" aria-labelledby="site-title">
+      <div class="hero-copy">
+        <p class="hero-kicker"><span></span> Web security fundamentals</p>
+        <h1 id="site-title">Learn ethical<br class="hero-break"> hacking.</h1>
+        <p class="hero-description">Start with a worked example, then see how a website handles the same input in two different ways.</p>
+        <div class="hero-actions">
+          <a class="button button-lime" id="start-learning" href="#sql">Start learning</a>
+          <a class="button button-hero-secondary" asp-page="/Playground">Open playground</a>
+        </div>
+      </div>
+      <div class="hero-graphic" aria-hidden="true">
+        <div class="flow-window">
+          <div class="flow-bar"><span class="window-dots"><i></i><i></i><i></i></span><span>Input handling</span></div>
+          <div class="flow-body">
+            <div class="flow-input"><span class="flow-caret">›</span> text from a user<span class="flow-cursor"></span></div>
+            <div class="flow-fork"></div>
+            <div class="flow-branches">
+              <div class="flow-branch flow-safe"><span>Protected</span><strong>Used as data</strong></div>
+              <div class="flow-branch flow-unsafe"><span>Unsafe</span><strong>Read as instructions</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="lessons" id="lessons" aria-labelledby="lessons-title">
+      <div class="section-heading">
+        <div>
+          <h2 id="lessons-title" tabindex="-1">Lessons</h2>
+          <p>Work through an example, watch the demonstration, and finish with a short quiz.</p>
+        </div>
+      </div>
+      <div class="lesson-grid">
+        <article class="lesson-card">
+          <div class="card-top">
+            <span class="lesson-icon database-icon" aria-hidden="true"><i></i></span>
+            <span class="lesson-category">Database security</span>
+          </div>
+          <h3>SQL injection</h3>
+          <p>See how a search box can change the question a website asks its database.</p>
+          <div class="card-footer">
+            <a class="button button-outline" href="#sql" aria-label="Open SQL injection lesson">Open lesson</a>
+            <span class="card-status" id="sql-status"></span>
+          </div>
+        </article>
+        <article class="lesson-card">
+          <div class="card-top">
+            <span class="lesson-icon browser-icon" aria-hidden="true"><i></i></span>
+            <span class="lesson-category">Browser security</span>
+          </div>
+          <h3>Stored cross-site scripting</h3>
+          <p>Follow a saved comment from the person who posts it to the browser of another reader.</p>
+          <div class="card-footer">
+            <a class="button button-outline" href="#xss" aria-label="Open stored cross-site scripting lesson">Open lesson</a>
+            <span class="card-status" id="xss-status"></span>
+          </div>
+        </article>
+      </div>
+    </section>
+  </div>
+  <div id="lesson" hidden></div>
+  <noscript><p class="noscript-note">Enable JavaScript to use the simulations and quizzes.</p></noscript>
+</main>
+
+<template id="lesson-template">
+  <article class="lesson-page">
+    <a href="#lessons" class="back-link">All lessons</a>
+    <header class="lesson-header">
+      <div class="lesson-heading">
+        <span class="lesson-icon" data-view="icon" aria-hidden="true"><i></i></span>
+        <div>
+          <p class="lesson-category" data-view="category"></p>
+          <h1 data-view="title" tabindex="-1"></h1>
+        </div>
+      </div>
+      <p class="lesson-intro" data-view="intro"></p>
+    </header>
+
+    <ol class="stepper" aria-label="Lesson steps">
+      <li data-step="example"><span>1</span> Example</li>
+      <li data-step="demo"><span>2</span> Demo</li>
+      <li data-step="quiz"><span>3</span> Quiz</li>
+    </ol>
+
+    <section class="lesson-section" data-panel="example">
+      <h2 data-view="example-title" tabindex="-1"></h2>
+      <p class="section-copy" data-view="scenario"></p>
+      <section class="worked-example" aria-labelledby="example-code-label">
+        <h3 id="example-code-label" data-view="example-label"></h3>
+        <pre><code data-view="example-code"></code></pre>
+        <dl class="example-parts" data-view="example-parts"></dl>
+        <p class="example-result"><strong>Result</strong> <span data-view="example-result"></span></p>
+      </section>
+      <div class="section-actions">
+        <button class="button button-primary" type="button" data-action="demo">Start demonstration</button>
+      </div>
+    </section>
+
+    <section class="lesson-section" data-panel="demo" hidden>
+      <h2 tabindex="-1">Follow the demonstration</h2>
+      <p class="section-copy" data-view="demo-intro"></p>
+      <div class="demo-input"><strong data-view="demo-label"></strong><code data-view="demo-input"></code></div>
+      <section class="guided-trace" aria-label="Demonstration steps" data-view="guided-trace"></section>
+      <div class="fix-note" data-view="fix" hidden>
+        <h3 data-view="fix-title"></h3>
+        <p data-view="fix-copy"></p>
+        <pre><code data-view="fix-code"></code></pre>
+        <a class="reference-link" data-view="source-link" target="_blank" rel="noopener noreferrer"></a>
+      </div>
+      <div class="section-actions">
+        <button class="button button-primary" type="button" data-action="quiz" hidden>Start quiz</button>
+        <button class="button button-outline" type="button" data-action="example">Back to example</button>
+      </div>
+    </section>
+
+    <section class="lesson-section" data-panel="quiz" hidden>
+      <h2 tabindex="-1">End-of-lesson quiz</h2>
+      <p class="section-copy">Answer three questions. You’ll get an explanation for each one.</p>
+      <form id="quiz-form">
+        <div class="questions" data-view="questions"></div>
+        <div class="section-actions">
+          <button class="button button-primary" type="submit">Check answers</button>
+          <button class="button button-outline" type="button" data-action="review">Review demonstration</button>
+        </div>
+      </form>
+      <div class="quiz-result" data-view="quiz-result" hidden>
+        <h3 data-view="quiz-score" tabindex="-1"></h3>
+        <p data-view="quiz-message"></p>
+        <button class="button button-primary" type="button" data-action="retry">Try again</button>
+        <a class="button button-primary" data-view="next-lesson" hidden></a>
+        <a class="button button-outline" asp-page="/Playground" data-view="playground-link" hidden>Practice in the Playground</a>
+      </div>
+    </section>
+  </article>
+</template>

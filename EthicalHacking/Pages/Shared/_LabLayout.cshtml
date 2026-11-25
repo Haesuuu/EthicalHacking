@@ -1,0 +1,45 @@
+@{
+    var isPlayground = ViewData["Title"]?.ToString() == "Playground";
+}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Learn how SQL injection and stored cross-site scripting happen, and how to prevent them, in two guided browser simulations.">
+  <meta name="color-scheme" content="light">
+  <title>@(isPlayground ? "Playground | Input Lab" : "Input Lab | Ethical hacking lessons")</title>
+  <link rel="stylesheet" href="~/css/input-lab.css" asp-append-version="true">
+  <script src="~/js/input-lab-simulation.js" asp-append-version="true" defer></script>
+  @await RenderSectionAsync("Scripts", required: true)
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="shell header-inner @(isPlayground ? "header-compact" : "header-with-progress")">
+      <a class="wordmark" href="@(isPlayground ? Url.Page("/Index") : "#")" aria-label="Input Lab home">
+        <span class="brand-mark" aria-hidden="true"><i></i></span>
+        Input<span>Lab</span>
+      </a>
+      <nav aria-label="Main navigation">
+        <a class="nav-link" asp-page="/Index" asp-fragment="lessons">Lessons</a>
+        <a class="nav-link" asp-page="/Playground" aria-current="@(isPlayground ? "page" : null)">Playground</a>
+      </nav>
+      @if (!isPlayground)
+      {
+        <span class="progress-chip" id="progress-chip">
+          <i class="progress-track" aria-hidden="true"><i id="progress-fill"></i></i>
+          <span id="progress-label">0 of 2 complete</span>
+        </span>
+      }
+    </div>
+  </header>
+
+  @RenderBody()
+
+  <footer class="site-footer shell">
+    <span class="footer-name">Input Lab</span>
+    <span>Practice security testing on systems you have permission to test.</span>
+  </footer>
+</body>
+</html>
